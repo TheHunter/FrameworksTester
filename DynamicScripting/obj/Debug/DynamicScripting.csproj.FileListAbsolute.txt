@@ -1,0 +1,4 @@
+C:\Users\Diego\Documents\Progetti\Net\HunterRepo\FrameworksTester\DynamicScripting\bin\Debug\DynamicScripting.dll
+C:\Users\Diego\Documents\Progetti\Net\HunterRepo\FrameworksTester\DynamicScripting\bin\Debug\DynamicScripting.pdb
+C:\Users\Diego\Documents\Progetti\Net\HunterRepo\FrameworksTester\DynamicScripting\obj\Debug\DynamicScripting.dll
+C:\Users\Diego\Documents\Progetti\Net\HunterRepo\FrameworksTester\DynamicScripting\obj\Debug\DynamicScripting.pdb

@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Dynamic.Extension</name>
+    </assembly>
+    <members>
+        <member name="T:Dynamic.Extension.DynamicBinder">
+            <summary>
+            An extension of DynamicObject class for extending itself with new members at runtime.
+            </summary>
+        </member>
+        <member name="T:Dynamic.Extension.IDynamicBinderProvider">
+            <summary>
+            Rappresents a dynamic object which is able to extend own behavior adding / removing new members at runtime.
+            </summary>
+        </member>
+        <member name="P:Dynamic.Extension.IDynamicBinderProvider.Item(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="propertyName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Dynamic.Extension.DynamicBinder.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Dynamic.Extension.DynamicBinder.TryGetMember(System.Dynamic.GetMemberBinder,System.Object@)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Dynamic.Extension.DynamicBinder.TrySetMember(System.Dynamic.SetMemberBinder,System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Dynamic.Extension.DynamicBinder.TryInvokeMember(System.Dynamic.InvokeMemberBinder,System.Object[],System.Object@)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Dynamic.Extension.DynamicBinder.TryDeleteMember(System.Dynamic.DeleteMemberBinder)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Dynamic.Extension.DynamicBinder.GetDynamicMemberNames">
+            <inheritdoc/>
+        </member>
+        <member name="P:Dynamic.Extension.DynamicBinder.Item(System.String)">
+            <inheritdoc/>
+        </member>
+    </members>
+</doc>

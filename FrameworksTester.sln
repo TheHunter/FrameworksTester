@@ -1,0 +1,66 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElasticSearchTester", "ElasticSearchTester\ElasticSearchTester.csproj", "{DDEE4707-A1C4-401C-9528-CDDE8E749862}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{E85BBC09-E1D6-4C8F-BA63-A1D3FB7428F7}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "elasticsearch", "elasticsearch", "{B37B5918-6A38-43E7-B6D9-50A13222CD19}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "rabbitmq", "rabbitmq", "{D7050E71-2AE8-4913-8311-291AA913F946}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitMqTester", "RabbitMqTester\RabbitMqTester.csproj", "{C56D7FD1-FE6F-42D1-8762-9847E9289BC4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "External", "External", "{501BD67E-A446-4B13-86DE-3CF490EAC710}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WcfJsonNetFormatter.net40", "..\WcfJsonNetFormatter\WcfJsonNetFormatter.net40\WcfJsonNetFormatter.net40.csproj", "{52258649-9997-4278-82B5-470CF2420B6D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WcfJsonFormatter.net40", "..\WcfJsonFormatter\WcfJsonFormatter.net40\WcfJsonFormatter.net40.csproj", "{B8DFFBE3-36AA-4AA4-881D-0F2EBF53094D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dynamic", "dynamic", "{8A9E2DA2-4ECC-4647-A560-CA569F202851}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicScripting", "DynamicScripting\DynamicScripting.csproj", "{4944E062-DAAC-4BFE-AF39-59B724F5FF06}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DDEE4707-A1C4-401C-9528-CDDE8E749862}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDEE4707-A1C4-401C-9528-CDDE8E749862}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDEE4707-A1C4-401C-9528-CDDE8E749862}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDEE4707-A1C4-401C-9528-CDDE8E749862}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C56D7FD1-FE6F-42D1-8762-9847E9289BC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C56D7FD1-FE6F-42D1-8762-9847E9289BC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C56D7FD1-FE6F-42D1-8762-9847E9289BC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C56D7FD1-FE6F-42D1-8762-9847E9289BC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52258649-9997-4278-82B5-470CF2420B6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52258649-9997-4278-82B5-470CF2420B6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52258649-9997-4278-82B5-470CF2420B6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52258649-9997-4278-82B5-470CF2420B6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8DFFBE3-36AA-4AA4-881D-0F2EBF53094D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8DFFBE3-36AA-4AA4-881D-0F2EBF53094D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8DFFBE3-36AA-4AA4-881D-0F2EBF53094D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8DFFBE3-36AA-4AA4-881D-0F2EBF53094D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4944E062-DAAC-4BFE-AF39-59B724F5FF06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4944E062-DAAC-4BFE-AF39-59B724F5FF06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4944E062-DAAC-4BFE-AF39-59B724F5FF06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4944E062-DAAC-4BFE-AF39-59B724F5FF06}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DDEE4707-A1C4-401C-9528-CDDE8E749862} = {B37B5918-6A38-43E7-B6D9-50A13222CD19}
+		{C56D7FD1-FE6F-42D1-8762-9847E9289BC4} = {D7050E71-2AE8-4913-8311-291AA913F946}
+		{52258649-9997-4278-82B5-470CF2420B6D} = {501BD67E-A446-4B13-86DE-3CF490EAC710}
+		{B8DFFBE3-36AA-4AA4-881D-0F2EBF53094D} = {501BD67E-A446-4B13-86DE-3CF490EAC710}
+		{4944E062-DAAC-4BFE-AF39-59B724F5FF06} = {8A9E2DA2-4ECC-4647-A560-CA569F202851}
+	EndGlobalSection
+EndGlobal
