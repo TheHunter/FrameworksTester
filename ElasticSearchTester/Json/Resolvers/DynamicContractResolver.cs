@@ -86,17 +86,27 @@ namespace ElasticSearchTester.Json.Resolvers
 
         protected override string ResolvePropertyName(string propertyName)
         {
-            if (this.members.Any(info => info.Name.Equals(propertyName)))
-                return base.ResolvePropertyName(propertyName);
+            if (propertyName.Equals("$type"))
+                Console.WriteLine("ciao");
 
-            return propertyName;
+            try
+            {
+                if (this.members.Any(info => info.Name.Equals(propertyName)))
+                    return base.ResolvePropertyName(propertyName);
+
+                return propertyName;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("ex", ex);
+            }
         }
 
         /// <summary>
-        /// 
+        /// Creates the property.
         /// </summary>
-        /// <param name="member"></param>
-        /// <param name="memberSerialization"></param>
+        /// <param name="member">The member.</param>
+        /// <param name="memberSerialization">The member serialization.</param>
         /// <returns></returns>
         protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
         {
@@ -104,13 +114,17 @@ namespace ElasticSearchTester.Json.Resolvers
             if (!(member is PropertyInfo))
                 return property;
 
+            if (member.Name == "$type")
+            {
+                Console.WriteLine("ciao...");
+                Console.WriteLine(member.Name);
+            }
+
             dynamic prp = member;
             property.Writable = prp.GetSetMethod(true) != null;
             property.Readable = prp.GetGetMethod(true) != null;
 
             return property;
         }
-
-
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Text;
 using ElasticSearchTester.Domain;
@@ -592,6 +593,39 @@ namespace ElasticSearchTester
         }
 
         [Fact]
+        public void TestOnNewForUpdateInstance()
+        {
+            var client = MakeElasticClient("student-repo");
+            Student instance = new Student
+            {
+                Id = 10,
+                Name = "Name10",
+                DataEncoded = "DataEncoded10",
+                Size = 10
+            };
+            
+            Student instance2 = new Student
+            {
+                Id = 5,
+                Name = "Name5",
+                DataEncoded = "DataEncoded5",
+                Size = 5
+            };
+            var resp1 = client.Index(instance);
+            Assert.True(resp1.Created);
+
+            var resp2 = client.Index(instance2);
+            Assert.True(resp2.Created);
+
+            var updateResponse = client.Update<Student>(descriptor => descriptor.Doc(instance2).Id(10));
+            Assert.NotNull(updateResponse);
+
+            client.Delete(instance);
+            client.Delete(instance2);
+
+        }
+
+        [Fact]
         //[Description("Inserimento & cancellazione massiva di documenti persistenti.")]
         public void TestWithBulkOperationOnInsert()
         {
@@ -661,7 +695,6 @@ namespace ElasticSearchTester
         }
 
         [Fact]
-        //[Description("Si recuperano tutti i documenti salvati nello storage tramite Id.")]
         public void MultiGetDocuments()
         {
             var client = MakeElasticClient("student-repo-bulk");
@@ -750,8 +783,8 @@ namespace ElasticSearchTester
             var bulkDelete = client.Bulk(descriptor => descriptor
                     .Delete<Student>(qq => qq.Id(1))
                     .Delete<Student>(qq => qq.Id(2))
-
                 );
+
             Assert.NotNull(bulkDelete);
             Assert.True(bulkDelete.IsValid);
 
@@ -763,6 +796,7 @@ namespace ElasticSearchTester
                         Size = 100
                     }
                 );
+
             Assert.NotNull(res1);
             Assert.True(res1.IsValid);
 

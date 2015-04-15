@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace ElasticSearchTester.Domain
 {
     /// <summary>
-    /// 
+    /// student class..
     /// </summary>
     public class Student
     {
@@ -45,7 +45,14 @@ namespace ElasticSearchTester.Domain
         {
             return (this.Name.GetHashCode() - this.DataEncoded.GetHashCode()) * 7;
         }
+    }
 
-        
+    /// <summary>
+    /// Student derives from student
+    /// </summary>
+    public class StudentDev
+        : Student
+    {
+        public string University { get; set; }
     }
 }
