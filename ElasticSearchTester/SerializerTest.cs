@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Security.Principal;
@@ -22,6 +23,39 @@ namespace ElasticSearchTester
         {
             this.callerCredentials = WindowsIdentity.GetCurrent();
             this.user = this.callerCredentials == null ? "No windows identity" : this.callerCredentials.Name;
+        }
+
+        [Fact]
+        public void TestOnSerializing()
+        {
+            DateTime data = new DateTime(2015, 5, 10);
+            var format = new DateTimeFormatInfo();
+            
+            var des = data.ToString(format);
+            Assert.NotNull(des);
+
+            DateTime tt1;
+            DateTime.TryParse(des, format, DateTimeStyles.None, out tt1);
+
+            DateTime tt2;
+            DateTime.TryParse(des, format, DateTimeStyles.None, out tt2);
+
+            Assert.Equal(tt1.Day, tt2.Day);
+            Assert.Equal(tt1.Month, tt2.Month);
+            Assert.Equal(tt1.Year, tt2.Year);
+
+
+            double d = 45.56;
+            var aa = d.ToString(CultureInfo.GetCultureInfo("es-ES"));
+            Assert.NotNull(aa);
+
+
+            DateTime now = DateTime.Now;
+            string rap = now.ToString(CultureInfo.InvariantCulture);
+            string rap2 = now.ToString(new DateTimeFormatInfo());
+            
+            Assert.Equal(rap, rap2);
+            Assert.NotNull(rap);
         }
 
         [Fact]

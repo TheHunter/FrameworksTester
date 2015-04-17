@@ -55,4 +55,28 @@ namespace ElasticSearchTester.Domain
     {
         public string University { get; set; }
     }
+
+    public class StudentTwo
+    {
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+
+        public List<GenParameter> Parameters { get; set; }
+    }
+
+    public class Parameter<T>
+    {
+        public string Name { get; set; }
+        public T Value { get; set; }
+    }
+
+
+    public class GenParameter
+        //: Parameter<object>
+    {
+        public string Name { get; set; }
+        public dynamic Value { get; set; }
+    }
+
 }
