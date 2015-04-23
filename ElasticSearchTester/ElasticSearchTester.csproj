@@ -74,7 +74,9 @@
     </Compile>
     <Compile Include="Extensions\StreamEncoder.cs" />
     <Compile Include="Json\Resolvers\DynamicContractResolver.cs" />
-    <Compile Include="MoreThanNestSerializer.cs" />
+    <Compile Include="MoreThanNestSerializer.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="PolymorphousTester.cs">
       <SubType>Code</SubType>
     </Compile>

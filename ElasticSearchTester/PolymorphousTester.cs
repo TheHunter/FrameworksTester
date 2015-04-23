@@ -53,16 +53,17 @@ namespace ElasticSearchTester
         public void TestOnReadStudentsPol()
         {
             var client = MakeElasticClient("polystudent");
-            //var response = client.Search<Student>(descriptor => descriptor
-            //    .From(0)
-            //    .Size(2));
+            var response = client.Search<dynamic>(descriptor => descriptor
+                .Type("student")
+                .From(0)
+                .Size(2));
 
-            var searchRequest = new SearchRequest("polystudent", "student")
-            {
-                From = 0,
-                Size = 10
-            };
-            var response = client.Search<Student>(searchRequest);
+            //var searchRequest = new SearchRequest("polystudent", "student")
+            //{
+            //    From = 0,
+            //    Size = 10
+            //};
+            //var response = client.Search<Student>(searchRequest);
 
             var res0 = client.Get<Student>(1);
             Assert.True(res0.Found);
@@ -98,6 +99,11 @@ namespace ElasticSearchTester
 
         private static ElasticClient MakeElasticClient(string defaultIndex)
         {
+            var list = new List<Type>
+            {
+                typeof(SearchDescriptor<>)
+            };
+
             var settings = MakeSettings(defaultIndex)
                 .ExposeRawResponse()
                 .UsePrettyResponses()
@@ -118,9 +124,9 @@ namespace ElasticSearchTester
                         });
 
                     zz.ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor;
-                    //zz.ContractResolver = new DynamicContractResolver(settings);
+                    zz.ContractResolver = new DynamicContractResolver(settings);
                 });
-            return new ElasticClient(settings);
+            return new ElasticClient(settings, null, new MoreThanNestSerializer(settings, list));
         }
 
 

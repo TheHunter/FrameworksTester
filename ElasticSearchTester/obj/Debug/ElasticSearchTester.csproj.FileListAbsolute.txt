@@ -41,3 +41,4 @@ D:\Projects\thehunter\FrameworksTester\ElasticSearchTester\bin\Debug\xunit.xml
 D:\Projects\thehunter\FrameworksTester\ElasticSearchTester\bin\Debug\xunit.extensions.xml
 D:\Projects\thehunter\FrameworksTester\ElasticSearchTester\obj\Debug\ElasticSearchTester.dll
 D:\Projects\thehunter\FrameworksTester\ElasticSearchTester\obj\Debug\ElasticSearchTester.pdb
+D:\Projects\thehunter\FrameworksTester\ElasticSearchTester\obj\Debug\ElasticSearchTester.csprojResolveAssemblyReference.cache
