@@ -21,14 +21,19 @@ namespace ElasticSearchTester
     {
         private readonly IIdentity callerCredentials;
         private readonly string user;
-
+        private readonly string localSourcePath;
 
         public ESBasicTester()
         {
             this.callerCredentials = WindowsIdentity.GetCurrent();
 
             this.user = this.callerCredentials == null ? "No windows identity" : this.callerCredentials.Name;
-
+            
+            var list = new List<string>(Directory.GetCurrentDirectory().Split('\\'));
+            list.RemoveAt(list.Count - 1);
+            list.RemoveAt(list.Count - 1);
+            list.Add("Resources");
+            this.localSourcePath = string.Join("\\", list.ToArray());
         }
 
         [Fact]
@@ -261,7 +266,7 @@ namespace ElasticSearchTester
             // cancellando l'indice, cancello anche tutti i documenti associati a questo indice.
             client.DeleteIndex(descriptor => descriptor.Index("attachment-repo-demo1"));
 
-            FileInfo info = new FileInfo(@"C:\Users\diego\Desktop\Test_ElasticSearch\source\Test1.txt");
+            FileInfo info = new FileInfo(this.localSourcePath + @"\Test1.txt");
             Attachment attachment = new Attachment(info, this.user);
             dynamic dynReference = attachment;
 
@@ -307,7 +312,7 @@ namespace ElasticSearchTester
         [Fact]
         public void TestVerifyBeforePersistingData()
         {
-            FileInfo info = new FileInfo(@"C:\Users\diego\Desktop\Test_ElasticSearch\source\Test1.txt");
+            FileInfo info = new FileInfo(this.localSourcePath + @"\Test1.txt");
             Attachment att1 = new Attachment(info, this.user);
 
             var client = MakeElasticClient("attachment-repo-t");
@@ -341,7 +346,7 @@ namespace ElasticSearchTester
             var client = MakeElasticClient("test-repo");
             client.DeleteIndex(new DeleteIndexRequest(new IndexNameMarker().Name = "test-repo"));
 
-            var files = Directory.GetFiles(@"C:\Users\diego\Desktop\Test_ElasticSearch\source", "*", SearchOption.TopDirectoryOnly);
+            var files = Directory.GetFiles(this.localSourcePath, "*", SearchOption.TopDirectoryOnly);
             // salvo ogni istanza recuperata dala directory..
             foreach (var file in files)
             {
@@ -356,9 +361,8 @@ namespace ElasticSearchTester
                 .Size(100)
                 );
 
-
             // percorso di output.
-            const string pattern = @"C:\Users\diego\Desktop\Test_ElasticSearch\output\{0}_out.{1}";
+            string pattern = Path.GetTempPath() + @"\output\{0}_out.{1}";
             foreach (var doc in searchResponse.Documents)
             {
                 string fullPath = string.Format(pattern, doc.Name, doc.Extension);

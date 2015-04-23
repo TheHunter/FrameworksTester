@@ -4,6 +4,7 @@ using System.ComponentModel.Design.Serialization;
 using System.Linq;
 using System.Runtime.Remoting.Channels;
 using System.Text;
+using Elasticsearch.Net;
 using ElasticSearchTester.Domain;
 using ElasticSearchTester.Extensions;
 using ElasticSearchTester.Json.Resolvers;
@@ -19,7 +20,7 @@ namespace ElasticSearchTester
         [Fact]
         public void TestOnStudentPol()
         {
-            var client = MakeElasticClient("polystudent1");
+            var client = MakeElasticClient("polystudent");
 
             client.Delete<Student>(1);
             client.Delete<Student>(2);
@@ -41,8 +42,8 @@ namespace ElasticSearchTester
                 University = "home"
             };
 
-            var resp0 = client.Index(instance0);
-            var resp1 = client.Index(instance1);
+            var resp0 = client.Index<Student>(instance0);
+            var resp1 = client.Index<Student>(instance1);
 
             Assert.True(resp0.Created);
             Assert.True(resp1.Created);
@@ -52,9 +53,16 @@ namespace ElasticSearchTester
         public void TestOnReadStudentsPol()
         {
             var client = MakeElasticClient("polystudent");
-            var response = client.Search<Student>(descriptor => descriptor
-                .From(0)
-                .Size(2));
+            //var response = client.Search<Student>(descriptor => descriptor
+            //    .From(0)
+            //    .Size(2));
+
+            var searchRequest = new SearchRequest("polystudent", "student")
+            {
+                From = 0,
+                Size = 10
+            };
+            var response = client.Search<Student>(searchRequest);
 
             var res0 = client.Get<Student>(1);
             Assert.True(res0.Found);
@@ -110,7 +118,7 @@ namespace ElasticSearchTester
                         });
 
                     zz.ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor;
-                    zz.ContractResolver = new DynamicContractResolver(settings);
+                    //zz.ContractResolver = new DynamicContractResolver(settings);
                 });
             return new ElasticClient(settings);
         }
@@ -118,8 +126,13 @@ namespace ElasticSearchTester
 
         private static ElasticClient MakeDefaultClient(string defaultIndex)
         {
+            var list = new List<Type>
+            {
+                typeof(SearchDescriptor<>)
+            };
+
             var settings = MakeSettings(defaultIndex);
-            return new ElasticClient(settings);
+            return new ElasticClient(settings, null, new MoreThanNestSerializer(settings, list));
         }
 
 

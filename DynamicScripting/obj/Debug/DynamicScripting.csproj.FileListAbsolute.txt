@@ -2,3 +2,11 @@ C:\Users\Diego\Documents\Progetti\Net\HunterRepo\FrameworksTester\DynamicScripti
 C:\Users\Diego\Documents\Progetti\Net\HunterRepo\FrameworksTester\DynamicScripting\bin\Debug\DynamicScripting.pdb
 C:\Users\Diego\Documents\Progetti\Net\HunterRepo\FrameworksTester\DynamicScripting\obj\Debug\DynamicScripting.dll
 C:\Users\Diego\Documents\Progetti\Net\HunterRepo\FrameworksTester\DynamicScripting\obj\Debug\DynamicScripting.pdb
+D:\Projects\thehunter\FrameworksTester\DynamicScripting\bin\Debug\DynamicScripting.dll
+D:\Projects\thehunter\FrameworksTester\DynamicScripting\bin\Debug\DynamicScripting.pdb
+D:\Projects\thehunter\FrameworksTester\DynamicScripting\bin\Debug\xunit.dll
+D:\Projects\thehunter\FrameworksTester\DynamicScripting\bin\Debug\xunit.xml
+D:\Projects\thehunter\FrameworksTester\DynamicScripting\obj\Debug\DynamicScripting.dll
+D:\Projects\thehunter\FrameworksTester\DynamicScripting\obj\Debug\DynamicScripting.pdb
+D:\Projects\thehunter\FrameworksTester\DynamicScripting\bin\Debug\xunit.extensions.dll
+D:\Projects\thehunter\FrameworksTester\DynamicScripting\bin\Debug\xunit.extensions.xml
