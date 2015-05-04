@@ -18,39 +18,54 @@ namespace ElasticSearchTester
         public MoreThanNestSerializer(IConnectionSettingsValues connectionSettings, IEnumerable<Type> typesToInspect = null)
             : base(connectionSettings)
         {
-            //this.serializationSettings = this.CreateLocalSettings(connectionSettings);
             this.typesToInspect = new HashSet<Type>(typesToInspect ?? Enumerable.Empty<Type>());
         }
 
         public override byte[] Serialize(object data, SerializationFormatting formatting = SerializationFormatting.Indented)
         {
             var format = formatting == SerializationFormatting.None ? Formatting.None : Formatting.Indented;
-            //JObject jo = JObject.FromObject(data, JsonSerializer.CreateDefault(this.serializationSettings));
-
-            //jo.Remove("$type");
-
-            //var serialized = jo.ToString(format);
-            //return string.IsNullOrWhiteSpace(serialized) ? null : Encoding.UTF8.GetBytes(serialized);
-
+            
             if (data == null)
                 return null;
 
-            Type t = data.GetType();
+            Type dataType = data.GetType();
             var ret = base.Serialize(data, formatting);
-            //if (this.typesToInspect.Contains(t))
-            //{
-            //    string originalJson = Encoding.UTF8.GetString(ret);
-            //    var jObject = JObject.Parse(originalJson);
-            //    if (jObject.Remove("$type"))
-            //        return Encoding.UTF8.GetBytes(jObject.ToString(format));
-            //}
 
-            string originalJson = Encoding.UTF8.GetString(ret);
-            var jObject = JObject.Parse(originalJson);
-            if (jObject.Remove("$type"))
-                return Encoding.UTF8.GetBytes(jObject.ToString(format));
+            if (dataType.IsGenericType)
+                dataType = dataType.GetGenericTypeDefinition();
+
+            if (this.typesToInspect.Contains(dataType))
+            {
+                string originalJson = Encoding.UTF8.GetString(ret);
+                var jObject = JObject.Parse(originalJson);
+                if (jObject.Remove("$type"))
+                    return Encoding.UTF8.GetBytes(jObject.ToString(format));
+            }
 
             return ret;
         }
     }
+
+
+    //public class MuClassDev
+    //{
+    //    public string MyLoalprop { get; set; }
+    //    public IMyCustomProperty MyInterfaceproperty { get; set; }
+    //}
+
+    //public interface IMyCustomProperty
+    //{
+    //    string Name { get; set; }
+    //}
+
+    //public class MyCustomProp1 : IMyCustomProperty
+    //{
+    //    public string Name { get; set; }
+    //}
+
+    //public class MyCustomProp2 : IMyCustomProperty
+    //{
+    //    public string Name { get; set; }
+    //    public int Code { get; set; }
+    //}
 }
