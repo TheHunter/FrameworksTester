@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Text;
+using Elasticsearch.Net;
 using ElasticSearchTester.Domain;
 using ElasticSearchTester.Extensions;
 using ElasticSearchTester.Json.Resolvers;
@@ -755,27 +756,70 @@ namespace ElasticSearchTester
             var client = MakeDefaultClient("student-repo");
 
             var searchRis = client.Search<Student>(qq => qq
-                    .From(0)
-                    .Size(100)
-                //.MatchAll()
-                //.Fields("id", "name", "size")
-                    .ScriptFields(sq => sq
-                        .Add("doubleSize", descriptor => descriptor
-                            .Script("doc['size'].value * multiplier")
-                            .Params(sp => sp
-                                .Add("multiplier", 4)
-                            )
-                        )
-                    )
-                );
-
+                .From(0)
+                .Size(100) //.MatchAll()
+                .Fields("id", "name", "size")
+                .ScriptFields(sq => sq
+                    .Add("doubleSize", descriptor => descriptor
+                        .Script("doc['size'].value * multiplier")
+                        .Params(sp => sp
+                            .Add("multiplier", 4)))));
 
             Assert.True(searchRis.IsValid);
-
             Assert.Equal(searchRis.Documents.Count(), 0);
-
             //Assert.Greater(searchRis.Hits.Count(), 0);
             Assert.True(searchRis.Hits.Any());
+        }
+
+        [Fact]
+        public void TestScriptField2()
+        {
+            var client = MakeDefaultClient("student-repo");
+            var resp = client.DeleteByQuery<Student>(descriptor => descriptor.AllTypes().MatchAll());
+            Assert.True(resp.IsValid);
+
+            var mapping = client.GetMapping<Student>();
+            if (mapping.IsValid)
+            {
+                var map = mapping.Mapping;
+                //if (map.Meta == null)
+                //    map.Meta = new FluentDictionary<string, object>();
+                if (!map.Properties.ContainsKey("transaction"))
+                {
+                    client.Map<Student>(descriptor => descriptor
+                        .Properties(propertiesDescriptor => propertiesDescriptor
+                            .NestedObject<Transaction>(mappingDescriptor => mappingDescriptor.Name("transaction"))
+                        ));
+                }
+            }
+
+            //client.PercolateAsync(\)
+
+            var student = new Student
+            {
+                Id = 1,
+                DataEncoded = "sdnjkvndskjVJKSN",
+                Name = "NOME1",
+                Size = 14
+            };
+
+            dynamic instance = student.AsDynamic();
+            instance.Transaction = new Transaction { Id = "10", Name = "MyCurrentTransaction" };
+            object r = instance;
+
+            string id = client.Infer.Id(student);
+            string id2 = client.Infer.Id(r);
+
+            Console.WriteLine(id);
+            Console.WriteLine(id2);
+
+            //var response1 = client.Index(r, descriptor => descriptor.Type<Student>().Id(id));
+            var response1 = client.Index(r, descriptor => descriptor.Type<Student>().IdFrom(student));
+            Assert.True(response1.IsValid);
+
+            //var response2 = client.Index(student, descriptor => descriptor.Type<Student>());
+            //Assert.True(response2.IsValid);
+
         }
 
         [Fact]

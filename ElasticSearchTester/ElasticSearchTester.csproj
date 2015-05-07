@@ -69,10 +69,12 @@
     <Compile Include="Domain\Employer.cs" />
     <Compile Include="Domain\Person.cs" />
     <Compile Include="Domain\Student.cs" />
+    <Compile Include="Extensions\Converter.cs" />
     <Compile Include="Extensions\CustomBinder.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Extensions\StreamEncoder.cs" />
+    <Compile Include="Extensions\Transaction.cs" />
     <Compile Include="Json\Resolvers\DynamicContractResolver.cs" />
     <Compile Include="MoreThanNestSerializer.cs">
       <SubType>Code</SubType>
