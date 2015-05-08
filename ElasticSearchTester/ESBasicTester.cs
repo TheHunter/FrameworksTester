@@ -63,7 +63,7 @@ namespace ElasticSearchTester
 
             var person = new Person
             {
-                //Id = "1",
+                //IdSession = "1",
                 Firstname = "Martijn",
                 Lastname = "Laarman",
                 Counter = 2
@@ -778,48 +778,134 @@ namespace ElasticSearchTester
             var resp = client.DeleteByQuery<Student>(descriptor => descriptor.AllTypes().MatchAll());
             Assert.True(resp.IsValid);
 
+            client.DeleteMapping<Student>();
+            client.Refresh();
+
+            client.Map<Student>(descriptor => descriptor);
+
             var mapping = client.GetMapping<Student>();
             if (mapping.IsValid)
             {
                 var map = mapping.Mapping;
-                //if (map.Meta == null)
-                //    map.Meta = new FluentDictionary<string, object>();
-                if (!map.Properties.ContainsKey("transaction"))
-                {
-                    client.Map<Student>(descriptor => descriptor
-                        .Properties(propertiesDescriptor => propertiesDescriptor
-                            .NestedObject<Transaction>(mappingDescriptor => mappingDescriptor.Name("transaction"))
-                        ));
-                }
+                //if (!map.Properties.ContainsKey("transaction"))
+                //{
+                //    client.Map<Student>(descriptor => descriptor
+                //        .Properties(propertiesDescriptor => propertiesDescriptor
+                //            .NestedObject<Isolation>(mappingDescriptor => mappingDescriptor.Name("transaction"))));
+                //}
             }
-
-            //client.PercolateAsync(\)
 
             var student = new Student
             {
-                Id = 1,
+                Id = 11,
+                DataEncoded = null,
+                Name = "NOME1",
+                Size = 14
+            };
+
+            dynamic instance = student.AsDynamic(
+                new KeyValuePair<string, object>("$idsession", "100"));
+
+            object r = instance;
+
+            string id = client.Infer.Id(student);
+            
+            // It doesn't work
+            //var response0 = client.Index(r, descriptor => descriptor.Type<Student>().IdFrom(student));
+
+            // ok
+            var response1 = client.Index(r, descriptor => descriptor
+                .Type<Student>()
+                .Id(id));
+
+            Assert.True(response1.IsValid);
+            Assert.Equal(student.Id.ToString(), response1.Id);
+
+            student = new Student
+            {
+                Id = 22,
                 DataEncoded = "sdnjkvndskjVJKSN",
                 Name = "NOME1",
                 Size = 14
             };
 
-            dynamic instance = student.AsDynamic();
-            instance.Transaction = new Transaction { Id = "10", Name = "MyCurrentTransaction" };
-            object r = instance;
+            var response2 = client.Index(student);
+            Assert.True(response2.IsValid);
+            Assert.Equal(student.Id.ToString(), response2.Id);
 
-            string id = client.Infer.Id(student);
-            string id2 = client.Infer.Id(r);
+            student = new Student
+            {
+                Id = 33,
+                DataEncoded = "sdnjkvndskjVJKSN",
+                Name = "NOME1",
+                Size = 14
+            };
 
-            Console.WriteLine(id);
-            Console.WriteLine(id2);
+            instance = student.AsDynamic(
+                new KeyValuePair<string, object>("$idsession", "200"));
+            
+            id = client.Infer.Id(student);
+            r = instance;
 
-            //var response1 = client.Index(r, descriptor => descriptor.Type<Student>().Id(id));
-            var response1 = client.Index(r, descriptor => descriptor.Type<Student>().IdFrom(student));
-            Assert.True(response1.IsValid);
+            var response3 = client.Index(r, descriptor => descriptor
+                .Type<Student>()
+                .Id(id));
 
-            //var response2 = client.Index(student, descriptor => descriptor.Type<Student>());
-            //Assert.True(response2.IsValid);
+            Assert.True(response3.IsValid);
+            Assert.Equal(student.Id.ToString(), response3.Id);
+        }
 
+
+        /// <summary>
+        /// Test on searching using advamced filtering....
+        /// </summary>
+        [Fact]
+        public void TestOnSearching()
+        {
+            var client = MakeDefaultClient("student-repo");
+
+            Func<FilterDescriptor<Student>, string, FilterContainer> ll = (fd, id) => fd
+                .Or(fd1 => fd1.Missing("$idsession"),
+                    fd2 => fd2.And(
+                        fd22 => fd22.Exists("$idsession"),
+                        fd23 => fd23.Term("$idsession", id)
+                        )
+                );
+
+            var searchResponse = client.Search<Student>(descriptor => descriptor
+                .From(0)
+                .Take(10)
+                .Version()
+                .Filter(fd => fd
+                    .Or(fd1 => fd1.Missing("$idsession"),
+                        fd2 => fd2.And(
+                            fd22 => fd22.Exists("$idsession"),
+                            fd23 => fd23.Term("$idsession", "500")
+                        )
+                    )
+                )
+            );
+
+            Assert.True(searchResponse.IsValid);
+            Console.WriteLine(searchResponse.Hits.Count());
+
+            var searcher = new SearchRequest("student-repo", client.Infer.TypeName<Student>())
+            {
+                From = 0,
+                Size = 10,
+                Version = true,
+                Filter = new FilterDescriptor<Student>()
+                    .Or(fd1 => fd1.Missing("$idsession"),
+                        fd2 => fd2.And(
+                            fd22 => fd22.Exists("$idsession"),
+                            fd23 => fd23.Term("$idsession", "500")
+                            )
+                    )
+            };
+
+            searchResponse = client.Search<Student>(searcher);
+            Assert.True(searchResponse.IsValid);
+            Console.WriteLine(searchResponse.Hits.Count());
         }
 
         [Fact]
@@ -1220,7 +1306,7 @@ namespace ElasticSearchTester
             settings.SetJsonSerializerSettingsModifier(
                 delegate(JsonSerializerSettings zz)
                 {
-                    zz.NullValueHandling = NullValueHandling.Ignore;
+                    zz.NullValueHandling = NullValueHandling.Include;
                     zz.MissingMemberHandling = MissingMemberHandling.Ignore;
                     zz.TypeNameHandling = TypeNameHandling.None;
                     zz.ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor;

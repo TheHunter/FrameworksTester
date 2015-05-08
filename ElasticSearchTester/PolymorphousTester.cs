@@ -194,7 +194,7 @@ namespace ElasticSearchTester
             ElasticTypeAttribute elasticTypeAttribute = ElasticAttributes.Type(type);
             if (elasticTypeAttribute != null && !string.IsNullOrWhiteSpace(elasticTypeAttribute.IdProperty))
                 return this.GetPropertyCaseInsensitive(type, elasticTypeAttribute.IdProperty);
-            string propertyName = "Id";
+            string propertyName = "IdSession";
             PropertyInfo propertyCaseInsensitive1 = this.GetPropertyCaseInsensitive(type, propertyName);
             if (propertyCaseInsensitive1 != (PropertyInfo)null)
                 return propertyCaseInsensitive1;
