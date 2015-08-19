@@ -38,7 +38,7 @@ namespace RabbitMqTester.proxies
 
         public string PrintTypeName(Person person)
         {
-            return this.Channel.PrintTypeName(person);
+            return this.Channel.PrintTypeName(person as Person);
         }
     }
 }

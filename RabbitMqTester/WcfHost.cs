@@ -50,7 +50,7 @@ namespace RabbitMqTester
                     },
                     "Calculator");
 
-                serviceEndpoint.Behaviors.Add(new RabbitMqEndpointBehavior(null));
+                ////serviceEndpoint.Behaviors.Add(new RabbitMqEndpointBehavior(null));
                 Console.WriteLine("Num. behaviors: {0}", serviceEndpoint.Behaviors.Count);
 
                 serviceHost.Open();
@@ -73,7 +73,7 @@ namespace RabbitMqTester
 
                 using (var proxy = new CalculatorProxy(proxyBinding, endpoint))
                 {
-                    proxy.Endpoint.Behaviors.Add(new RabbitMqEndpointBehavior(null));
+                    ////proxy.Endpoint.Behaviors.Add(new RabbitMqEndpointBehavior(null));
                     var res = proxy.Add(4, 5);
                     Console.WriteLine(res);
 
