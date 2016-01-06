@@ -64,7 +64,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domain\GenUser.cs" />
+    <Compile Include="Domain\MySealedClass.cs" />
     <Compile Include="Domain\Singer.cs" />
+    <Compile Include="EmitTester.cs" />
     <Compile Include="ESBasicTester.cs" />
     <Compile Include="Domain\Attachment.cs" />
     <Compile Include="Domain\Company.cs" />

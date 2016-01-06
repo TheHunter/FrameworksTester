@@ -13,4 +13,10 @@ namespace ElasticSearchTester.Domain
         public string Lastname { get; set; }
         public int Counter { get; set; }
     }
+
+    public class PersonV2
+        : Person
+    {
+        public int Other { get; set; }
+    }
 }

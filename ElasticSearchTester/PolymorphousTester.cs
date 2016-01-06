@@ -119,6 +119,19 @@ namespace ElasticSearchTester
             Assert.True(resolver.HasIdProperty<Company>());
         }
 
+        [Fact]
+        public void TestOnProperty()
+        {
+            Assert.NotNull(Converter.PropertyName<Company>(company => company.Id));
+            Assert.NotNull(Converter.PropertyName<Company>(company => company.Name));
+            Assert.NotNull(Converter.PropertyName<Company>(company => company.Employers));
+            Assert.Null(Converter.PropertyName<Company>(company => company.Name.ToLower()));
+
+            Assert.NotNull(Converter.PropertyName<PersonV2>(company => company.Counter));
+            Assert.NotNull(Converter.PropertyName<PersonV2>(company => company.Id));
+            Assert.NotNull(Converter.PropertyName<PersonV2>(company => company.Other));
+        }
+
         private static ElasticClient MakeElasticClient(string defaultIndex)
         {
             var list = new List<Type>
@@ -194,7 +207,7 @@ namespace ElasticSearchTester
             ElasticTypeAttribute elasticTypeAttribute = ElasticAttributes.Type(type);
             if (elasticTypeAttribute != null && !string.IsNullOrWhiteSpace(elasticTypeAttribute.IdProperty))
                 return this.GetPropertyCaseInsensitive(type, elasticTypeAttribute.IdProperty);
-            string propertyName = "IdSession";
+            const string propertyName = "Id";
             PropertyInfo propertyCaseInsensitive1 = this.GetPropertyCaseInsensitive(type, propertyName);
             if (propertyCaseInsensitive1 != (PropertyInfo)null)
                 return propertyCaseInsensitive1;

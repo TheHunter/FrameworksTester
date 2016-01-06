@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.ServiceModel;
-using System.Text;
 using RabbitMQ.Client;
 using RabbitMQ.ServiceModel;
-using RabbitMqTester.behaviors;
 using RabbitMqTester.model;
 using RabbitMqTester.proxies;
 using RabbitMqTester.services;
@@ -55,7 +51,7 @@ namespace RabbitMqTester
 
                 serviceHost.Open();
                 Console.WriteLine("The service is opened, press ENTER to follow next instructions...");
-                Console.ReadLine();
+                ////Console.ReadLine();
 
                 var proxyBinding = new RabbitMQBinding(
                         "localhost",

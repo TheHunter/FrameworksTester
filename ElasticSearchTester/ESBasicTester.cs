@@ -1,6 +1,7 @@
 ﻿using System;
 using System.CodeDom;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -329,9 +330,12 @@ namespace ElasticSearchTester
                 .Query(q => q
                     .Term(p => p.Name, "Test1".ToLower())
                     )
+                .Query(q => q.MatchPhrase(dd => dd.OnField("field").Query("valore")))
+                    
 
                 )
             ;
+            //.MatchPhrase(st => st.OnField(attachment => attachment.DataEncoded).Query("Q2lhbyBhIHR1dHRpICEhIQ0KdmVyc2lvbmUgMi4="))            //OK
 
             Assert.NotNull(response);
             Assert.NotNull(response.Documents);
@@ -774,7 +778,9 @@ namespace ElasticSearchTester
         [Fact]
         public void TestScriptField2()
         {
-            var client = MakeDefaultClient("student-repo");
+            const string dynamicProperty = "$idsession";
+
+            var client = MakeElasticClient("student-repo");
             var resp = client.DeleteByQuery<Student>(descriptor => descriptor.AllTypes().MatchAll());
             Assert.True(resp.IsValid);
 
@@ -804,7 +810,7 @@ namespace ElasticSearchTester
             };
 
             dynamic instance = student.AsDynamic(
-                new KeyValuePair<string, object>("$idsession", "100"));
+                new KeyValuePair<string, object>(dynamicProperty, "100"));
 
             object r = instance;
 
@@ -830,6 +836,7 @@ namespace ElasticSearchTester
             };
 
             var response2 = client.Index(student);
+
             Assert.True(response2.IsValid);
             Assert.Equal(student.Id.ToString(), response2.Id);
 
@@ -842,7 +849,7 @@ namespace ElasticSearchTester
             };
 
             instance = student.AsDynamic(
-                new KeyValuePair<string, object>("$idsession", "200"));
+                new KeyValuePair<string, object>(dynamicProperty, "200"));
             
             id = client.Infer.Id(student);
             r = instance;
@@ -862,29 +869,49 @@ namespace ElasticSearchTester
         [Fact]
         public void TestOnSearching()
         {
+            const string dynamicProperty = "$idsession";
             var client = MakeDefaultClient("student-repo");
-
-            Func<FilterDescriptor<Student>, string, FilterContainer> ll = (fd, id) => fd
-                .Or(fd1 => fd1.Missing("$idsession"),
-                    fd2 => fd2.And(
-                        fd22 => fd22.Exists("$idsession"),
-                        fd23 => fd23.Term("$idsession", id)
-                        )
-                );
-
+            
             var searchResponse = client.Search<Student>(descriptor => descriptor
                 .From(0)
                 .Take(10)
                 .Version()
                 .Filter(fd => fd
-                    .Or(fd1 => fd1.Missing("$idsession"),
+                    .Or(fd1 => fd1.Missing(dynamicProperty),
                         fd2 => fd2.And(
-                            fd22 => fd22.Exists("$idsession"),
-                            fd23 => fd23.Term("$idsession", "500")
+                            fd22 => fd22.Exists(dynamicProperty),
+                            fd23 => fd23.Term(dynamicProperty, "500")
                         )
                     )
                 )
             );
+
+            // questo codice funziona....
+            // quindi dynamics si puo' utilizzare...
+            var res = client.Get<dynamic>(descriptor => descriptor.Id(33).Type<Student>().Index("student-repo"));
+            Assert.NotNull(res);
+            Assert.NotNull(res.Source);
+
+            var res0 = client.Update<Student>(descriptor => descriptor
+                .Id(22)
+                //.Type<Student>()
+                //.Script("ctx._source._idsession = idsession")
+                //.Params(p => p
+                //        .Add("idsession", (string)null))
+                .Script("ctx._source.remove(\"\\$idsession\")")
+                );
+
+
+            //var res2 = client.Update<dynamic>(descriptor => descriptor
+            //    .Id(33)
+            //    .Type<Student>()
+            //    .Script("ctx._source.remove(\"_idsession\")")
+            //    );
+
+            Assert.NotNull(res0);
+            Assert.True(res0.IsValid);
+
+
 
             Assert.True(searchResponse.IsValid);
             Console.WriteLine(searchResponse.Hits.Count());
@@ -895,10 +922,10 @@ namespace ElasticSearchTester
                 Size = 10,
                 Version = true,
                 Filter = new FilterDescriptor<Student>()
-                    .Or(fd1 => fd1.Missing("$idsession"),
+                    .Or(fd1 => fd1.Missing("_idsession"),
                         fd2 => fd2.And(
-                            fd22 => fd22.Exists("$idsession"),
-                            fd23 => fd23.Term("$idsession", "500")
+                            fd22 => fd22.Exists("_idsession"),
+                            fd23 => fd23.Term("_idsession", "500")
                             )
                     )
             };
@@ -1000,7 +1027,7 @@ namespace ElasticSearchTester
 
             var agg = res.Aggs.Terms("my_agg");
             Assert.NotNull(agg);
-            Assert.Equal(2, agg.Items.Count);
+            Assert.Equal(1, agg.Items.Count);
         }
 
         [Fact]
@@ -1060,7 +1087,7 @@ namespace ElasticSearchTester
             client.Refresh();
 
             var result = client.Search<Student>(qq => qq
-                    .Aggregations(a => a
+                    .Aggregations(a => a        
                         .ValueCount("mc2", t => t
                             .Field(att => att.Name)
                         )
@@ -1085,6 +1112,53 @@ namespace ElasticSearchTester
             Assert.NotNull(agg3);
             Assert.NotNull(agg4);
             Assert.NotNull(agg5);
+        }
+
+        [Fact]
+        public void AggregationSearcher5_()
+        {
+            var client = MakeElasticClient("student-repo");
+            var result = client.Search<Student>(qq => qq
+                    .Aggregations(a => a
+                        .Max("id_max", descriptor => descriptor.Field(student => student.Id))
+                        .Max("size_max", descriptor => descriptor.Field(student => student.Size))
+                    )
+                );
+
+            Assert.NotNull(result);
+            Assert.True(result.IsValid);
+
+            var aaa = result.Aggs.Max("id_max");
+            Assert.NotNull(aaa);
+            Assert.Equal(33.0, aaa.Value);
+
+            var bbb = result.Aggs.Max("size_max");
+            Assert.NotNull(bbb);
+            Assert.Equal(14.0, bbb.Value);
+
+
+            var result0 = client.Search<Student>(descriptor => descriptor
+                .Aggregations(a => a
+                    //.Max("id_max2", aggDescriptor => aggDescriptor.Field("_id"))
+                    //.Max("id_max2", aggDescriptor => aggDescriptor.Script("ctx._id as long"))
+                    //.Max("id_max2", aggDescriptor => aggDescriptor.Script("doc['ciao'].value as long"))
+                    .Max("id_max2", aggDescriptor => aggDescriptor.Script("org.elasticsearch.index.mapper.Uid.idFromUid(doc[\"_uid\"].value).toLong()"))
+                )
+                );
+
+            //Assert.False(result0.IsValid);
+            var ccc = result0.Aggs.Max("id_max2");
+            Assert.NotNull(ccc);
+
+            var result1 = client.Search<Student>(descriptor => descriptor
+                .ScriptFields(sq => sq
+                    //.Add("MyProperty", filterDescriptor => filterDescriptor.Script("ctx._id + 1000"))
+                    .Add("MyProperty", filterDescriptor => filterDescriptor.Script("doc['id'].value + 1000"))
+                    //.Add("MyProperty", filterDescriptor => filterDescriptor.Script("org.elasticsearch.index.mapper.Uid.idFromUid(doc['_uid'].value) + 1000"))
+                )
+                );
+            Assert.NotNull(result1);
+            
         }
 
         [Fact]
@@ -1255,25 +1329,39 @@ namespace ElasticSearchTester
         [Fact]
         public void TestOnSinger()
         {
-            var client = MakeElasticClient("singers");
-            //var client = MakeDefaultClient("singers");
+            const string index = "singers";
+            var client = MakeElasticClient(index);
+            client.DeleteMapping<Singer>();
 
-            
+            var res = client.Map<Singer>(descriptor => descriptor.Index(index)
+                .IdField(mappingDescriptor => mappingDescriptor.Path("key"))
+                );
+            Assert.NotNull(res);
 
-            //var instance = new Singer
-            //{
-            //    Key = 5,
-            //    Name = "Nome di test"
-            //};
+            var mapping = client.GetMapping<Singer>(descriptor => descriptor.Index(index));
+            Assert.NotNull(mapping);
 
-            //var response = client.Index(instance);
+            var map = mapping.Mapping;
+            Assert.NotNull(map);
+            Assert.NotNull(map.IdFieldMappingDescriptor);
 
-            //var response = client.Search<Singer>(descriptor => descriptor
-            //    .Take(100)
-            //    .From(0)
-            //    );
+            var instance = new Singer
+            {
+                Key = 5,
+                Name = "Nome di test"
+            };
 
-            //Assert.True(response.IsValid);
+            var response = client.Index(instance);
+            Assert.True(response.IsValid);
+            Assert.Equal(5.ToString(CultureInfo.InvariantCulture), response.Id);
+
+            var id = client.Infer.Id(new Singer
+            {
+                Key = 10,
+                Name = "myname"
+            });
+
+            Assert.Null(id);
         }
 
         [Fact]
@@ -1300,21 +1388,27 @@ namespace ElasticSearchTester
 
         private static ElasticClient MakeElasticClient(string defaultIndex)
         {
+            var list = new List<Type>
+            {
+                //typeof(SearchDescriptor<>), typeof(DeleteByQueryDescriptor<>), typeof(QueryPathDescriptorBase<,,>)
+                typeof(QueryPathDescriptorBase<,,>)
+            };
+
             var settings = MakeSettings(defaultIndex)
                 .ExposeRawResponse();
 
             settings.SetJsonSerializerSettingsModifier(
                 delegate(JsonSerializerSettings zz)
                 {
-                    zz.NullValueHandling = NullValueHandling.Include;
+                    //zz.NullValueHandling = NullValueHandling.Include;
                     zz.MissingMemberHandling = MissingMemberHandling.Ignore;
-                    zz.TypeNameHandling = TypeNameHandling.None;
+                    zz.TypeNameHandling = TypeNameHandling.Auto;
                     zz.ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor;
                     zz.ContractResolver = new DynamicContractResolver(settings);
                 }
                 );
             
-            return new ElasticClient(settings);
+            return new ElasticClient(settings, null, new MoreThanNestSerializer(settings, list));
         }
 
 

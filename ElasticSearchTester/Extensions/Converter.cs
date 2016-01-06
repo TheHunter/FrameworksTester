@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Dynamic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 
 namespace ElasticSearchTester.Extensions
@@ -34,6 +36,33 @@ namespace ElasticSearchTester.Extensions
             }
 
             return expando;
+        }
+
+        public static PropertyInfo PropertyName<TInstance>(Expression<Func<TInstance, object>> expression)
+        {
+            MemberExpression memberExpr = null;
+            var exp = expression as LambdaExpression;
+            if (exp == null)
+                return null;
+
+            switch (exp.Body.NodeType)
+            {
+                case ExpressionType.Convert:
+                {
+                    memberExpr = ((UnaryExpression)exp.Body).Operand as MemberExpression;
+                    break;
+                }
+                case ExpressionType.MemberAccess:
+                {
+                    memberExpr = exp.Body as MemberExpression;
+                    break;
+                }
+            }
+
+            if (memberExpr == null)
+                return null;
+
+            return memberExpr.Member as PropertyInfo;
         }
     }
 }

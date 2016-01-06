@@ -8,6 +8,6 @@ D:\Projects\thehunter\FrameworksTester\DynamicScripting\bin\Debug\xunit.dll
 D:\Projects\thehunter\FrameworksTester\DynamicScripting\bin\Debug\xunit.extensions.dll
 D:\Projects\thehunter\FrameworksTester\DynamicScripting\bin\Debug\xunit.xml
 D:\Projects\thehunter\FrameworksTester\DynamicScripting\bin\Debug\xunit.extensions.xml
-D:\Projects\thehunter\FrameworksTester\DynamicScripting\obj\Debug\DynamicScripting.csprojResolveAssemblyReference.cache
 D:\Projects\thehunter\FrameworksTester\DynamicScripting\obj\Debug\DynamicScripting.dll
 D:\Projects\thehunter\FrameworksTester\DynamicScripting\obj\Debug\DynamicScripting.pdb
+D:\Projects\thehunter\FrameworksTester\DynamicScripting\obj\Debug\DynamicScripting.csprojResolveAssemblyReference.cache
