@@ -1,0 +1,395 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WcfJsonNetFormatter</name>
+    </assembly>
+    <members>
+        <member name="T:WcfJsonFormatter.Ns.ClientJsonNetMessageFormatter">
+            <summary>
+            Class ClientJsonNetMessageFormatter.
+            </summary>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.ClientJsonNetMessageFormatter.#ctor(System.ServiceModel.Description.OperationDescription,System.ServiceModel.Description.ServiceEndpoint,Newtonsoft.Json.JsonSerializer,WcfJsonFormatter.IServiceRegister)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WcfJsonFormatter.Ns.ClientJsonNetMessageFormatter"/> class.
+            </summary>
+            <param name="operation">The operation.</param>
+            <param name="endpoint">The endpoint.</param>
+            <param name="serializer">The serializer.</param>
+            <param name="serviceRegister">The service register.</param>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.ClientJsonNetMessageFormatter.EncodeParameters(System.Object[])">
+            <summary>
+            Encodes the parameters.
+            </summary>
+            <param name="parameters">The parameters.</param>
+            <returns>System.Byte[].</returns>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.ClientJsonNetMessageFormatter.DecodeReply(System.Byte[],System.Object[])">
+            <summary>
+            Decodes the reply.
+            </summary>
+            <param name="body">The body.</param>
+            <param name="parameters">The parameters.</param>
+            <returns>System.Object.</returns>
+        </member>
+        <member name="T:WcfJsonFormatter.Ns.CustomContractResolver">
+            <summary>
+            Class CustomContractResolver.
+            </summary>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.CustomContractResolver.#ctor(System.Boolean,System.Boolean,System.Func{System.Type,System.Type})">
+            <summary>
+            Initializes a new instance of the <see cref="T:WcfJsonFormatter.Ns.CustomContractResolver"/> class.
+            </summary>
+            <param name="shareCache">if set to <c>true</c> [share cache].</param>
+            <param name="includeFields">if set to <c>true</c> [include fields].</param>
+            <param name="normalizer">The normalizer.</param>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.CustomContractResolver.GetPropertyMembers(System.Type)">
+            <summary>
+            Gets the property members.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>IEnumerable&lt;PropertyInfo&gt;.</returns>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.CustomContractResolver.CreateProperties(System.Type,Newtonsoft.Json.MemberSerialization)">
+            <summary>
+            Creates properties for the given <see cref="T:Newtonsoft.Json.Serialization.JsonContract" />.
+            </summary>
+            <param name="type">The type to create properties for.</param>
+            <param name="memberSerialization">The member serialization mode for the type.</param>
+            <returns>Properties for the given <see cref="T:Newtonsoft.Json.Serialization.JsonContract" />.</returns>
+        </member>
+        <member name="T:WcfJsonFormatter.Ns.DispatchJsonNetMessageFormatter">
+            <summary>
+            Class DispatchJsonNetMessageFormatter.
+            </summary>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.DispatchJsonNetMessageFormatter.#ctor(System.ServiceModel.Description.OperationDescription,Newtonsoft.Json.JsonSerializer,WcfJsonFormatter.IServiceRegister)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WcfJsonFormatter.Ns.DispatchJsonNetMessageFormatter"/> class.
+            </summary>
+            <param name="operation">The operation.</param>
+            <param name="serializer">The serializer.</param>
+            <param name="serviceRegister">The service register.</param>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.DispatchJsonNetMessageFormatter.DecodeParameters(System.Byte[],System.Object[])">
+            <summary>
+            Decodes the parameters.
+            </summary>
+            <param name="body">The body.</param>
+            <param name="parameters">The parameters.</param>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.DispatchJsonNetMessageFormatter.EncodeReply(System.Object[],System.Object)">
+            <summary>
+            Encodes the reply.
+            </summary>
+            <param name="parameters">The parameters.</param>
+            <param name="result">The result.</param>
+            <returns>System.Byte[].</returns>
+        </member>
+        <member name="T:WcfJsonFormatter.Ns.JsonFormatterUtility">
+            <summary>
+            Class JsonFormatterUtility.
+            </summary>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.JsonFormatterUtility.JTokenToSerialize(Newtonsoft.Json.Linq.JToken)">
+            <summary>
+            the token to serialize.
+            </summary>
+            <param name="token">The token.</param>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.JsonFormatterUtility.JTokenToSerialize(Newtonsoft.Json.Linq.JProperty)">
+            <summary>
+            the token to serialize.
+            </summary>
+            <param name="token">The token.</param>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.JsonFormatterUtility.JTokenToSerialize(Newtonsoft.Json.Linq.JArray)">
+            <summary>
+            the token to serialize.
+            </summary>
+            <param name="token">The token.</param>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.JsonFormatterUtility.JTokenToSerialize(Newtonsoft.Json.Linq.JObject)">
+            <summary>
+            the token to serialize.
+            </summary>
+            <param name="token">The token.</param>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.JsonFormatterUtility.NormalizeTypeName(System.String)">
+            <summary>
+            Normalizes the name of the type.
+            </summary>
+            <param name="typeName">Name of the type.</param>
+            <returns>System.String.</returns>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.JsonFormatterUtility.GetTypeNameFromJObject(Newtonsoft.Json.Linq.JObject)">
+            <summary>
+            Gets the type name from jobject.
+            </summary>
+            <param name="token">The token.</param>
+            <returns>System.String.</returns>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.JsonFormatterUtility.IsJArrayType(System.Type)">
+            <summary>
+            Determines whether [is jarray type] [the specified type].
+            </summary>
+            <param name="type">The type.</param>
+            <returns><c>true</c> if [is j array type] [the specified type]; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.JsonFormatterUtility.EncodeTo64(System.String)">
+            <summary>
+            Encodes the given string in base64.
+            </summary>
+            <param name="toEncode">To encode.</param>
+            <returns>System.String.</returns>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.JsonFormatterUtility.DecodeFrom64(System.String)">
+            <summary>
+            Decodes the string from base64.
+            </summary>
+            <param name="encodedData">The encoded data.</param>
+            <returns>System.String.</returns>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.JsonFormatterUtility.IsBase64String(System.String)">
+            <summary>
+            Determines whether [is base64 string] [the specified string].
+            </summary>
+            <param name="str">The string.</param>
+            <returns><c>true</c> if [is base64 string] [the specified string]; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.JsonFormatterUtility.MakeSettings(Newtonsoft.Json.JsonSerializer)">
+            <summary>
+            Makes the settings.
+            </summary>
+            <param name="serializer">The serializer.</param>
+            <returns>JsonSerializerSettings.</returns>
+        </member>
+        <member name="T:WcfJsonFormatter.Ns.JsonReaderConverter">
+            <summary>
+            Class JsonReaderConverter.
+            </summary>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.JsonReaderConverter.#ctor(System.Type)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WcfJsonFormatter.Ns.JsonReaderConverter"/> class.
+            </summary>
+            <param name="type">The type.</param>
+            <exception cref="T:Newtonsoft.Json.JsonSerializationException">The object type converter cannot be null.</exception>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.JsonReaderConverter.CanConvert(System.Type)">
+            <summary>
+            Determines whether this instance can convert the specified object type.
+            </summary>
+            <param name="objectType">Type of the object.</param>
+            <returns><c>true</c> if this instance can convert the specified object type; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.JsonReaderConverter.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.Object,Newtonsoft.Json.JsonSerializer)">
+            <summary>
+            Reads the JSON representation of the object.
+            </summary>
+            <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader"/> to read from.</param>
+            <param name="objectType">Type of the object.</param>
+            <param name="existingValue">The existing value of object being read.</param>
+            <param name="serializer">The calling serializer.</param>
+            <returns>The object value.</returns>
+            <exception cref="T:Newtonsoft.Json.JsonSerializationException">No object created.</exception>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.JsonReaderConverter.MakeInstance">
+            <summary>
+            Makes the instance.
+            </summary>
+            <returns>System.Object.</returns>
+            <exception cref="T:Newtonsoft.Json.JsonSerializationException"></exception>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.JsonReaderConverter.WriteJson(Newtonsoft.Json.JsonWriter,System.Object,Newtonsoft.Json.JsonSerializer)">
+            <summary>
+            Writes the JSON representation of the object.
+            </summary>
+            <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter"/> to write to.</param>
+            <param name="value">The value.</param>
+            <param name="serializer">The calling serializer.</param>
+            <exception cref="T:System.NotSupportedException">JsonReaderConverter should only be used while deserializing.</exception>
+        </member>
+        <member name="P:WcfJsonFormatter.Ns.JsonReaderConverter.CanWrite">
+            <summary>
+            Gets a value indicating whether this <see cref="T:Newtonsoft.Json.JsonConverter" /> can write JSON.
+            </summary>
+            <value><c>true</c> if this <see cref="T:Newtonsoft.Json.JsonConverter" /> can write JSON; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="T:WcfJsonFormatter.Ns.QueryStringJsonConverter">
+            <summary>
+            Class QueryStringJsonConverter.
+            </summary>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.QueryStringJsonConverter.#ctor(Newtonsoft.Json.JsonSerializer,WcfJsonFormatter.IServiceRegister)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WcfJsonFormatter.Ns.QueryStringJsonConverter"/> class.
+            </summary>
+            <param name="serializer">The serializer.</param>
+            <param name="serviceRegister">The service register.</param>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.QueryStringJsonConverter.CanConvert(System.Type)">
+            <summary>
+            Determines whether the specified type can be converted to and from a string representation.
+            </summary>
+            <param name="type">The <see cref="T:System.Type" /> to convert.</param>
+            <returns>A value that specifies whether the type can be converted.</returns>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.QueryStringJsonConverter.ConvertStringToValue(System.String,System.Type)">
+            <summary>
+            Converts a query string parameter to the specified type.
+            </summary>
+            <param name="parameter">The string form of the parameter and value.</param>
+            <param name="parameterType">The <see cref="T:System.Type"/> to convert the parameter to.</param>
+            <returns>The converted parameter.</returns>
+            <exception cref="T:System.InvalidOperationException">Error when the serializer tried to deserialize the given parameter.</exception>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.QueryStringJsonConverter.ConvertValueToString(System.Object,System.Type)">
+            <summary>
+            Converts a parameter to a query string representation.
+            </summary>
+            <param name="parameter">The parameter to convert.</param>
+            <param name="parameterType">The <see cref="T:System.Type"/> of the parameter to convert.</param>
+            <returns>The parameter name and value.</returns>
+            <exception cref="T:System.InvalidOperationException">Error when the serializer tried to serialize the given parameter.</exception>
+        </member>
+        <member name="T:WcfJsonFormatter.Ns.WebHttpJsonNetBehavior">
+            <summary>
+            Class WebHttpJsonNetBehavior.
+            </summary>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.WebHttpJsonNetBehavior.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:WcfJsonFormatter.Ns.WebHttpJsonNetBehavior"/> class.
+            </summary>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.WebHttpJsonNetBehavior.#ctor(System.Collections.Generic.IEnumerable{System.Type},System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WcfJsonFormatter.Ns.WebHttpJsonNetBehavior"/> class.
+            </summary>
+            <param name="knownTypes">The known types.</param>
+            <param name="enableUriTemplate">if set to <c>true</c> [enable URI template].</param>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.WebHttpJsonNetBehavior.MakeDispatchMessageFormatter(System.ServiceModel.Description.OperationDescription,System.ServiceModel.Description.ServiceEndpoint)">
+            <summary>
+            Makes the dispatch message formatter.
+            </summary>
+            <param name="operationDescription">The operation description.</param>
+            <param name="endpoint">The endpoint.</param>
+            <returns>IDispatchJsonMessageFormatter.</returns>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.WebHttpJsonNetBehavior.MakeClientMessageFormatter(System.ServiceModel.Description.OperationDescription,System.ServiceModel.Description.ServiceEndpoint)">
+            <summary>
+            Makes the client message formatter.
+            </summary>
+            <param name="operationDescription">The operation description.</param>
+            <param name="endpoint">The endpoint.</param>
+            <returns>IClientJsonMessageFormatter.</returns>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.WebHttpJsonNetBehavior.GetQueryStringConverter(System.ServiceModel.Description.OperationDescription)">
+            <summary>
+            Gets the query string converter.
+            </summary>
+            <param name="operationDescription">The service operation.</param>
+            <returns>A <see cref="T:System.ServiceModel.Dispatcher.QueryStringConverter" /> instance.</returns>
+        </member>
+        <member name="P:WcfJsonFormatter.Ns.WebHttpJsonNetBehavior.Serializer">
+            <summary>
+            Gets the serializer.
+            </summary>
+            <value>The serializer.</value>
+        </member>
+        <member name="T:WcfJsonFormatter.Ns.WebHttpUriJsonNetBehavior">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.WebHttpUriJsonNetBehavior.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:WcfJsonFormatter.Ns.WebHttpUriJsonNetBehavior"/> class.
+            </summary>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.WebHttpUriJsonNetBehavior.#ctor(System.Collections.Generic.IEnumerable{System.Type})">
+            <summary>
+            Initializes a new instance of the <see cref="T:WcfJsonFormatter.Ns.WebHttpUriJsonNetBehavior"/> class.
+            </summary>
+            <param name="knownTypes"></param>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.WebHttpUriJsonNetBehavior.GetRequestDispatchFormatter(System.ServiceModel.Description.OperationDescription,System.ServiceModel.Description.ServiceEndpoint)">
+            <summary>
+            </summary>
+            <param name="operationDescription"></param>
+            <param name="endpoint"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.WebHttpUriJsonNetBehavior.GetRequestClientFormatter(System.ServiceModel.Description.OperationDescription,System.ServiceModel.Description.ServiceEndpoint)">
+            <summary>
+            </summary>
+            <param name="operationDescription"></param>
+            <param name="endpoint"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.WebHttpUriJsonNetBehavior.GetQueryStringConverter(System.ServiceModel.Description.OperationDescription)">
+            <summary>
+            Gets the query string converter.
+            </summary>
+            <param name="operationDescription">The operation description.</param>
+            <returns></returns>
+        </member>
+        <member name="T:WcfJsonFormatter.Ns.NissingDispatchMessageFormatter">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.NissingDispatchMessageFormatter.DeserializeRequest(System.ServiceModel.Channels.Message,System.Object[])">
+            <summary>
+            Deserializes a message into an array of parameters.
+            </summary>
+            <param name="message">The incoming message.</param>
+            <param name="parameters">The objects that are passed to the operation as parameters.</param>
+            <exception cref="T:System.InvalidOperationException">The operation was invoked mustn't be invoked because It's not implements.</exception>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.NissingDispatchMessageFormatter.SerializeReply(System.ServiceModel.Channels.MessageVersion,System.Object[],System.Object)">
+            <summary>
+            Serializes a reply message from a specified message version, array of parameters, and a return value.
+            </summary>
+            <param name="messageVersion">The SOAP message version.</param>
+            <param name="parameters">The out parameters.</param>
+            <param name="result">The return value.</param>
+            <returns>
+            The serialized reply message.
+            </returns>
+            <exception cref="T:System.InvalidOperationException">The operation was invoked mustn't be invoked because It's not implements.</exception>
+        </member>
+        <member name="T:WcfJsonFormatter.Ns.MissingClientMessageFormatter">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.MissingClientMessageFormatter.DeserializeReply(System.ServiceModel.Channels.Message,System.Object[])">
+            <summary>
+            Converts a message into a return value and out parameters that are passed back to the calling operation.
+            </summary>
+            <param name="message">The inbound message.</param>
+            <param name="parameters">Any out values.</param>
+            <returns>
+            The return value of the operation.
+            </returns>
+            <exception cref="T:System.InvalidOperationException">The operation was invoked mustn't be invoked because It's not implements.</exception>
+        </member>
+        <member name="M:WcfJsonFormatter.Ns.MissingClientMessageFormatter.SerializeRequest(System.ServiceModel.Channels.MessageVersion,System.Object[])">
+            <summary>
+            Converts an <see cref="T:System.Object"/> array into an outbound <see cref="T:System.ServiceModel.Channels.Message"/>.
+            </summary>
+            <param name="messageVersion">The version of the SOAP message to use.</param>
+            <param name="parameters">The parameters passed to the WCF client operation.</param>
+            <returns>
+            The SOAP message sent to the service operation.
+            </returns>
+            <exception cref="T:System.InvalidOperationException">The operation was invoked mustn't be invoked because It's not implements.</exception>
+        </member>
+    </members>
+</doc>
