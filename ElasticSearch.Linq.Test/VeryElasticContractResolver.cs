@@ -59,6 +59,9 @@ namespace ElasticSearch.Linq.Test
                 ctr.PropertyNameResolver = func;
             }
 
+            // 
+            // contract.DefaultCreator
+
             return contract;
         }
 

@@ -26,7 +26,7 @@ namespace ElasticSearch.Linq.Converter
             try
             {
                 var converters = serializer.Converters;
-
+                
                 var facetConverter = converters
                     .FirstOrDefault(converter => FacetConverType.IsInstanceOfType(converter)) as IFacetConverter
                                      ?? new FacetJsonConverter();

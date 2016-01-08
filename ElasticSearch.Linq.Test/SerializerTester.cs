@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using ElasticSearch.Linq.Converter;
 using ElasticSearch.Linq.Mapping;
 using ElasticSearch.Linq.Request;
@@ -65,17 +63,17 @@ namespace ElasticSearch.Linq.Test
             search1.Filter = new ExistsCriteria("name");
             search1.Query = new QueryStringCriteria("ciao", new[] { "name", "surname" });
             search1.SearchType = "nulltype";
-            // search1.SortOptions = new List<SortOption> { new SortOption("name", true), new SortOption("surname", false) };
+            // search1.SortOptions = new List<SortOption>();
+            //search1.SortOptions = new List<SortOption> { new SortOption("name", true), new SortOption("surname", false) };
             search1.From = 15;
             // search1.Highlight = new Highlight { PostTag = "posttag", PreTag = "pretag" };
             // search1.Highlight.AddFields("field1", "field2");
-            search1.Size = 10;
-            // facets
+            search1.Size = 15;
             search1.Timeout = TimeSpan.FromSeconds(10);
             search1.Facets = new List<IFacet>
             {
                 new FilterFacet("counter", new ExistsCriteria("surname")),
-                new TermsFacet("name", 10, "field1", "field2"),
+                new TermsFacet("name", 12, "field1", "field2"),
                 new StatisticalFacet("countdown", "field4", "field5")
             };
 
@@ -85,7 +83,10 @@ namespace ElasticSearch.Linq.Test
             search2.Filter = search1.Filter;
             search2.Query = search1.Query;
             search2.SearchType = search1.SearchType;
-            search2.SortOptions = search1.SortOptions ?? new List<SortOption>();
+
+            //search2.SortOptions = search1.SortOptions ?? new List<SortOption>();
+            search2.SortOptions = search1.SortOptions;
+
             search2.From = search1.From;
             search2.Highlight = search1.Highlight;
             search2.Size = search1.Size;

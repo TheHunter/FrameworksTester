@@ -13,7 +13,10 @@ namespace ElasticSearch.Linq.Test.Model
     [JsonObject(MemberSerialization.OptIn)]
     public class SearchParams
     {
-        private long defaultSize = 10;
+        public SearchParams()
+        {
+            this.SortOptions = new List<SortOption>();
+        }
 
         [JsonProperty(PropertyName = "fields", Order = 0)]
         public List<string> Fields { get; set; }
@@ -51,8 +54,8 @@ namespace ElasticSearch.Linq.Test.Model
 
         public string SearchType { get; set; }
 
-        [JsonProperty(PropertyName = "sort", Order = 7)]
-        public List<SortOption> SortOptions { get; set; }
+        [JsonProperty(PropertyName = "sort", Order = 7, ItemConverterType = typeof(SortOptionConverter))]
+        public List<SortOption> SortOptions { get; }
 
         [JsonProperty(PropertyName = "from", Order = 8)]
         public long @From { get; set; }
@@ -60,17 +63,9 @@ namespace ElasticSearch.Linq.Test.Model
         [JsonProperty(PropertyName = "highlight", Order = 9)]
         public Highlight Highlight { get; set; }
 
-        public long? Size { get; set; }
-
         [JsonProperty(PropertyName = "size", Order = 10)]
-        protected long? SizeAtr
-        {
-            get
-            {
-                return !this.Facets.Any() ? this.Size : null;
-            }
-        }
-
+        public long? Size { get; set; }
+        
         [JsonConverter(typeof(DynamicFacetJsonConverter))]
         [JsonProperty(PropertyName = "Facets", Order = 12)]
         public List<IFacet> Facets { get; set; }
@@ -93,5 +88,18 @@ namespace ElasticSearch.Linq.Test.Model
                 return this.Timeout.TotalMinutes.ToString(transportCulture) + "m";
             }
         }
+
+        #region customization for serializing members
+
+        public bool ShouldSerializeSortOptions()
+        {
+            return this.SortOptions != null && SortOptions.Any();
+        }
+
+        public bool ShouldSerializeSize()
+        {
+            return (this.Facets != null && !this.Facets.Any());
+        }
+        #endregion
     }
 }

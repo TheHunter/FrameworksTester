@@ -11,3 +11,12 @@ D:\Projects\thehunter\FrameworksTester\DynamicScripting\bin\Debug\xunit.extensio
 D:\Projects\thehunter\FrameworksTester\DynamicScripting\obj\Debug\DynamicScripting.dll
 D:\Projects\thehunter\FrameworksTester\DynamicScripting\obj\Debug\DynamicScripting.pdb
 D:\Projects\thehunter\FrameworksTester\DynamicScripting\obj\Debug\DynamicScripting.csprojResolveAssemblyReference.cache
+C:\Users\manuel.larahuiza\Documents\GitHub\FrameworksTester\DynamicScripting\bin\Debug\DynamicScripting.dll
+C:\Users\manuel.larahuiza\Documents\GitHub\FrameworksTester\DynamicScripting\bin\Debug\DynamicScripting.pdb
+C:\Users\manuel.larahuiza\Documents\GitHub\FrameworksTester\DynamicScripting\bin\Debug\xunit.dll
+C:\Users\manuel.larahuiza\Documents\GitHub\FrameworksTester\DynamicScripting\bin\Debug\xunit.extensions.dll
+C:\Users\manuel.larahuiza\Documents\GitHub\FrameworksTester\DynamicScripting\bin\Debug\xunit.xml
+C:\Users\manuel.larahuiza\Documents\GitHub\FrameworksTester\DynamicScripting\bin\Debug\xunit.extensions.xml
+C:\Users\manuel.larahuiza\Documents\GitHub\FrameworksTester\DynamicScripting\obj\Debug\DynamicScripting.csprojResolveAssemblyReference.cache
+C:\Users\manuel.larahuiza\Documents\GitHub\FrameworksTester\DynamicScripting\obj\Debug\DynamicScripting.dll
+C:\Users\manuel.larahuiza\Documents\GitHub\FrameworksTester\DynamicScripting\obj\Debug\DynamicScripting.pdb
